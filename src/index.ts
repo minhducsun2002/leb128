@@ -12,9 +12,9 @@ export class UnsignedLEB128 {
      * @param offset Offset to read from
      */
     static decode (buf: Buffer, offset: number = 0) {
-        const len = this.$scanForNullBytes(buf, offset);
+        const mp = this.$scanForNullBytes(buf, offset);
         let result = 0, shift = 0;
-        for (let d = 0 ; d <= len ; d++) {
+        for (let d = 0 ; d <= mp - offset ; d++) {
             const a = buf.readUInt8(offset + d) & Mask.LOWER_7; /* masking, we only care about lower 7 bits */
             result |= a << shift; /* shift this value left and add it */
             shift += (8 - 1);

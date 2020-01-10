@@ -50,7 +50,7 @@ export class UnsignedLEB128 {
     }
 
     /**
-     * Return the index that the byte at which ends the stream
+     * Return the offset that the byte at which ends the stream
      * @param buf Buffer to scan
      * @param offset Offset to start scanning
      */
@@ -61,6 +61,15 @@ export class UnsignedLEB128 {
             count++;
         } while (tmp & Mask.UPPER_1);
         return count - 1;
+    }
+
+    /**
+     * Return the index that the byte at which ends the stream
+     * @param buf Buffer to scan
+     * @param offset Offset to start scanning
+     */
+    static getLength(buf: Buffer, offset: number = 0) {
+        return this.$scanForNullBytes(buf, offset) - offset;
     }
 }
 

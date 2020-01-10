@@ -2,7 +2,7 @@
 ###### A parser for LEB128-formatted numbers.
 ![](https://img.shields.io/github/workflow/status/minhducsun2002/leb128/Jest%20tests?label=Jest%20tests)
 ![](https://img.shields.io/github/workflow/status/minhducsun2002/leb128/TypeScript%20compilation)
-![](https://img.shields.io/npm/v/@minhducsun2002/leb128)
+[![](https://img.shields.io/npm/v/@minhducsun2002/leb128)](https://www.npmjs.com/package/@minhducsun2002/leb128)
 
 ### Usage
 ```js
@@ -31,3 +31,4 @@ var f = LEB128.decode(Buffer.from([0x01, 0x81, 0x95, 0x78]), 1, true)
 ### License 
 
 MIT License. See [here](./LICENSE)
+

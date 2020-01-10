@@ -1,6 +1,6 @@
 {
   "name": "@minhducsun2002/leb128",
-  "version": "0.0.2",
+  "version": "0.0.2-1",
   "description": "LEB128 numbers, done right",
   "main": "dist/index.js",
   "scripts": {

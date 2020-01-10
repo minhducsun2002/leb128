@@ -1,0 +1,25 @@
+{
+  "name": "@minhducsun2002/leb128",
+  "version": "0.0.2",
+  "description": "LEB128 numbers, done right",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "repository": {},
+  "author": "Minh Duc Vo <minhducsun2002@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^24.0.25",
+    "@types/node": "^13.1.6",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.3.0",
+    "ts-node": "^8.6.0",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "typescript": "^3.7.4"
+  }
+}

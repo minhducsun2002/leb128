@@ -41,3 +41,7 @@ test(`Encoded byte count in passed buffer matches byte count of unsigned encoder
     const f = Buffer.concat([orig, Buffer.from([0x1, 0x2, 0x3, 0x4])]);
     expect(UnsignedLEB128.getLength(f)).toBe(orig.length - 1)
 }, 2000)
+
+test(`Decoder throws when passed a non-terminating LEB128 buffer`, () => {
+    expect(() => LEB128.decode(Buffer.from([0b11111111, 0b10000000, 0b11101000]))).toThrow()
+}, 1000)

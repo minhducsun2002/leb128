@@ -57,6 +57,9 @@ export class UnsignedLEB128 {
     private static $scanForNullBytes(buf: Buffer, offset: number = 0) {
         let count = offset, tmp: number = 0;
         do {
+            if (count >= buf.byteLength)
+                throw new Error('This is not a LEB128-encoded buffer, no ending found!')
+
             tmp = buf.slice(count, count + 1).readUInt8(0);
             count++;
         } while (tmp & Mask.UPPER_1);

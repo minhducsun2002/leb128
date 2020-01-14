@@ -1,9 +1,13 @@
 enum Mask { LOWER_7 = 0b01111111, UPPER_1 = 0b10000000 }
-const int = (a : number) => Number.isSafeInteger(a);
+/**
+ * Check if a given value is a safe integer
+ * @param a Value to check
+ */
+const int = (a : any) => Number.isSafeInteger(a);
 
 /**
  * Class to work with unsigned LEB128 integers.
- * @see https://en.wikipedia.org/wiki/LEB128#Encoding_format
+ * See [this Wikipedia article](https://en.wikipedia.org/wiki/LEB128#Encoding_format).
  */
 export class UnsignedLEB128 {
     /**
@@ -53,6 +57,7 @@ export class UnsignedLEB128 {
      * Return the offset that the byte at which ends the stream
      * @param buf Buffer to scan
      * @param offset Offset to start scanning
+     * @throws If no byte starting with 0 as the highest bit set
      */
     private static $scanForNullBytes(buf: Buffer, offset: number = 0) {
         let count = offset, tmp: number = 0;
@@ -67,7 +72,13 @@ export class UnsignedLEB128 {
     }
 
     /**
-     * Return the index that the byte at which ends the stream
+     * Return the relative index that the byte at which ends the stream.
+     * 
+     * @example
+     * ```js
+     * getLength(Buffer.from([0b1000000, 0b00000000]), 1) // 0
+     * getLength(Buffer.from([0b1000000, 0b00000000]), 0) // 1
+     * ```
      * @param buf Buffer to scan
      * @param offset Offset to start scanning
      */

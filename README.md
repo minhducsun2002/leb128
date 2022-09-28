@@ -13,22 +13,22 @@ const { LEB128 } = require('@minhducsun2002/leb128');
 
 // Unsigned integers
 var a = LEB128.encode(462644);
-// <Buffer b4 9e 1c>
+// Uint8Array (3) [ 180, 158, 28 ]
 var b = LEB128.decode(a);
 // 462644
-var c = LEB128.decode(Buffer.from([0xA6, 0x87, 0x90, 0x04]))
+var c = LEB128.decode([0xA6, 0x87, 0x90, 0x04])
 // 8651686
 
 // Signed (negative) integers
 var d = LEB128.encode(-128383);
-// <Buffer 81 95 78>
+// Uint8Array(3) [ 129, 149, 120 ]
 var e = LEB128.decode(d, 0, true); /* offset = 0, negative number */
 // 8651686
-var f = LEB128.decode(Buffer.from([0x01, 0x81, 0x95, 0x78]), 1, true)
+var f = LEB128.decode([0x01, 0x81, 0x95, 0x78], 1, true)
 // -128383
 ```
 
-### License 
+### License
 
 MIT License. See [here](./LICENSE)
 

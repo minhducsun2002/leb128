@@ -1,6 +1,6 @@
 {
   "name": "@minhducsun2002/leb128",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "LEB128 numbers, done right",
   "main": "dist/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "test": "jest",
     "dev": "jest --watch",
     "docs": "typedoc --options typedoc.json",
-    "prepublishOnly": "npm run build && npm run doc"
+    "prepublishOnly": "npm run build && npm run docs"
   },
   "files": [
     "dist/**/*"

@@ -11,15 +11,15 @@ const int = (a : any) => Number.isSafeInteger(a);
  */
 export class UnsignedLEB128 {
     /**
-     * Decode a Buffer into a number.
-     * @param buf Buffer containing the representation in LEB128
+     * Decode a Uint8Array into a number.
+     * @param buf Uint8Array containing the representation in LEB128
      * @param offset Offset to read from
      */
-    static decode (buf: Buffer, offset: number = 0) {
+    static decode (buf: Uint8Array, offset: number = 0) {
         const mp = this.$scanForNullBytes(buf, offset);
         let result = 0, shift = 0;
         for (let d = 0 ; d <= mp - offset ; d++) {
-            const a = buf.readUInt8(offset + d) & Mask.LOWER_7; /* masking, we only care about lower 7 bits */
+            const a = buf[offset + d] & Mask.LOWER_7; /* masking, we only care about lower 7 bits */
             result |= a << shift; /* shift this value left and add it */
             shift += (8 - 1);
         }
@@ -27,7 +27,7 @@ export class UnsignedLEB128 {
     }
 
     /**
-     * Create a LEB128 Buffer from a number
+     * Create a LEB128 Uint8Array from a number
      * @param number Number to convert from
      */
     static encode (number: number) {
@@ -45,7 +45,7 @@ export class UnsignedLEB128 {
             out.push(byte);
         }
         while (a);
-        return Buffer.from(out);
+        return Uint8Array.from(out);
     }
 
     private static check (n : number) {
@@ -55,17 +55,17 @@ export class UnsignedLEB128 {
 
     /**
      * Return the offset that the byte at which ends the stream
-     * @param buf Buffer to scan
+     * @param buf Uint8Array to scan
      * @param offset Offset to start scanning
      * @throws If no byte starting with 0 as the highest bit set
      */
-    private static $scanForNullBytes(buf: Buffer, offset: number = 0) {
+    private static $scanForNullBytes(buf: Uint8Array, offset: number = 0) {
         let count = offset, tmp: number = 0;
         do {
             if (count >= buf.byteLength)
-                throw new Error('This is not a LEB128-encoded buffer, no ending found!')
+                throw new Error('This is not a LEB128-encoded Uint8Array, no ending found!')
 
-            tmp = buf.slice(count, count + 1).readUInt8(0);
+            tmp = buf.slice(count, count + 1)[0];
             count++;
         } while (tmp & Mask.UPPER_1);
         return count - 1;
@@ -73,16 +73,16 @@ export class UnsignedLEB128 {
 
     /**
      * Return the relative index that the byte at which ends the stream.
-     * 
+     *
      * @example
      * ```js
-     * getLength(Buffer.from([0b1000000, 0b00000000]), 1) // 0
-     * getLength(Buffer.from([0b1000000, 0b00000000]), 0) // 1
+     * getLength(Uint8Array.from([0b1000000, 0b00000000]), 1) // 0
+     * getLength(Uint8Array.from([0b1000000, 0b00000000]), 0) // 1
      * ```
-     * @param buf Buffer to scan
+     * @param buf Uint8Array to scan
      * @param offset Offset to start scanning
      */
-    static getLength(buf: Buffer, offset: number = 0) {
+    static getLength(buf: Uint8Array, offset: number = 0) {
         return this.$scanForNullBytes(buf, offset) - offset;
     }
 }
@@ -100,7 +100,7 @@ export class SignedLEB128 {
     }
 
     /**
-     * Create a LEB128 Buffer from a number
+     * Create a LEB128 Uint8Array from a number
      * @param number Number to convert from. Must be less than 0.
      */
     static encode (number: number) {
@@ -113,11 +113,11 @@ export class SignedLEB128 {
     }
 
     /**
-     * Decode a Buffer into a (signed) number.
-     * @param buf Buffer containing the representation in LEB128
+     * Decode a Uint8Array into a (signed) number.
+     * @param buf Uint8Array containing the representation in LEB128
      * @param offset Offset to read from
      */
-    static decode (buf: Buffer, offset: number = 0) {
+    static decode (buf: Uint8Array, offset: number = 0) {
         const r = UnsignedLEB128.decode(buf, offset);
         const bitCount = Math.ceil(Math.log2(r))
         const mask = (1 << bitCount);
@@ -127,17 +127,17 @@ export class SignedLEB128 {
 
 export class LEB128 {
     /**
-     * Create a LEB128 Buffer from a number
+     * Create a LEB128 Uint8Array from a number
      * @param number Number to convert from.
      */
     static encode = (n : number) => (n >= 0 ? UnsignedLEB128 : SignedLEB128).encode(n);
 
     /**
-     * Decode a Buffer into a (signed) number.
-     * @param buf Buffer containing the representation in LEB128
+     * Decode a Uint8Array into a (signed) number.
+     * @param buf Uint8Array containing the representation in LEB128
      * @param offset Offset to read from
      * @param s Whether the output number is negative
      */
-    static decode = (buf: Buffer, offset: number = 0, s : boolean = false) => 
+    static decode = (buf: Uint8Array, offset: number = 0, s : boolean = false) =>
         (s ? SignedLEB128 : UnsignedLEB128).decode(buf, offset);
 }

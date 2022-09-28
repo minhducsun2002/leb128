@@ -9,10 +9,10 @@ test(`Decoding the encoded form of ${rnd} yields ${rnd}`, () => {
 
 test(`Decoding the encoded form of ${rnd} yields ${rnd} with non-zero offset`, () => {
     const f = LEB128.encode(rnd);
-    const test = [0x1, 0x2, 0x3];
+    const test = new Uint8Array([0x1, 0x2, 0x3]);
     expect(
         LEB128.decode(
-            Buffer.concat([Buffer.from(test), f]),
+            new Uint8Array([...test, ...f]),
             test.length
         )
     ).toBe(rnd)
@@ -38,10 +38,10 @@ test(`Encoder throws when not passed a safe integer`, () => {
 
 test(`Encoded byte count in passed buffer matches byte count of unsigned encoder output`, () => {
     const orig = UnsignedLEB128.encode(rnd);
-    const f = Buffer.concat([orig, Buffer.from([0x1, 0x2, 0x3, 0x4])]);
+    const f = new Uint8Array([...orig, ...[0x1, 0x2, 0x3, 0x4]]);
     expect(UnsignedLEB128.getLength(f)).toBe(orig.length - 1)
 }, 2000)
 
 test(`Decoder throws when passed a non-terminating LEB128 buffer`, () => {
-    expect(() => LEB128.decode(Buffer.from([0b11111111, 0b10000000, 0b11101000]))).toThrow()
+    expect(() => LEB128.decode(new Uint8Array([0b11111111, 0b10000000, 0b11101000]))).toThrow()
 }, 1000)
